@@ -166,7 +166,7 @@ func main() {
 	sw := 0
 	flag := 0
 	for sw < 10 {
-		fmt.Println("username va password ra vared konid")
+		fmt.Println("username va password ra vared konid:")
 		fmt.Scan(&s, &ss)
 		for i := 0; i < 1000; i++ {
 			if s == staff[i].user && ss == staff[i].pass {
