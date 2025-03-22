@@ -11,5 +11,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	file.WriteString("Hello World")
+	// defer will be executed at the end of the function
 	defer file.Close()
 }
