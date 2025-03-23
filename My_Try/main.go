@@ -41,7 +41,7 @@ type Staff struct {
 // prints the contents of the slice and ensures the file is closed before the
 // program exits.
 
-func Read_Files() {
+func Read_Files() ([]Staff, []Warehouse, []Customer, []Transaction) {
 	////////////////////////////////////////////
 	// Open the "staff.txt" file for reading.
 	// If there is an error opening the file, the program will panic.
@@ -79,11 +79,9 @@ func Read_Files() {
 	}
 	fmt.Println(warehouseLines)
 
-	// since we have I*3 we cant use this code below
-	//First way
+	// Process the warehouse lines
 	var warehouseList []Warehouse
 	for i := 0; i < len(warehouseLines); i += 3 {
-
 		inventory, err := strconv.Atoi(warehouseLines[(i)+1])
 		if err != nil {
 			panic(err)
@@ -94,23 +92,8 @@ func Read_Files() {
 		}
 		warehouseList = append(warehouseList, Warehouse{name: warehouseLines[i], inventory: inventory, price: price})
 	}
-	//Second way
-	// var warehouseList [100]Warehouse
-	// for i := 0; i < len(warehouseLines)/3; i++ {
-	// 	warehouseList[i].inventory, err = strconv.Atoi(warehouseLines[(3*i)+1])
-	// 	warehouseList[i].price, err = strconv.Atoi(warehouseLines[(3*i)+2])
-	// 	warehouseList[i].name = warehouseLines[(3 * i)]
-	// }
+	/////////////////////////////////////////////
 
-	// fmt.Println("122222222222222222222222")
-	// fmt.Println(warehouseList[0])
-	// // for _, warehouse := range warehouseList {
-	// 	fmt.Println(warehouse)
-	// }
-	// for i, warehouse := range warehouseLines {
-	// 	fmt.Println(i, warehouse)
-	// }
-	////////////////////////////////////////////////////////////////////////////
 	// Open the "customer.txt" file for reading.
 	// If there is an error opening the file, the program will panic.
 	customerFile, err := os.Open("customer.txt")
@@ -125,11 +108,9 @@ func Read_Files() {
 	}
 	fmt.Println(customerLines)
 
-	// since we have I*3 we cant use this code below
-	//First way
+	// Process the customer lines
 	var customerList []Customer
 	for i := 0; i < len(customerLines); i += 4 {
-
 		ID, err := strconv.Atoi(customerLines[(i)+2])
 		if err != nil {
 			panic(err)
@@ -140,8 +121,8 @@ func Read_Files() {
 		}
 		customerList = append(customerList, Customer{name: customerLines[i], Finally_name: customerLines[i+1], ID: ID, mandeh: mandeh})
 	}
+	/////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////////////
 	// Open the "Transaction.txt" file for reading.
 	// If there is an error opening the file, the program will panic.
 	transactionFile, err := os.Open("Transaction.txt")
@@ -170,8 +151,36 @@ func Read_Files() {
 		transactionList = append(transactionList, Transaction{ID: ID, Name: transactionLines[i+1], Inventory: Inventory})
 	}
 	fmt.Println(transactionList)
+
+	return staffList, warehouseList, customerList, transactionList
 }
 
 func main() {
-	Read_Files()
+
+
+	staffList, warehouseList, customerList, transactionList := Read_Files()
+	noop(staffList, warehouseList, customerList, transactionList)
+	var tempusername, temppass string
+		var i int
+	outerLoop:
+		for i < 10 {
+			fmt.Println("Enter your username: ")
+			fmt.Scanln(&tempusername)
+			fmt.Println("Enter your password: ")
+			fmt.Scanln(&temppass)
+			// for i, staff1 := range staffList {
+			for i := 0; i < 1000; i++ {
+				a,b:=staffList[i].Username,staffList[i].Password
+				fmt.Println(a,b)
+				if staffList[i].Username == tempusername && staffList[i].Password == temppass {
+					fmt.Println("Welcome", staffList[i].Username, i)
+					break outerLoop
+				}
+			}
+			fmt.Println("Invalid username or password. Please try again.")
+		}
+}
+
+func noop(staffList []Staff, warehouseList []Warehouse, customerList []Customer, transactionList []Transaction) {
+	fmt.Println("unimplemented")
 }
